@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <unistd.h>
+#include <ctype.h>
 
 int check_lowercase(int c, int start, int end){
     // check if start-end is correct range
@@ -22,9 +25,9 @@ int check_lowercase(int c, int start, int end){
 
 }
 
-int play_wordle(char target[])
+int play_wordle(char target[], int size_of_word)
 {
-	for(int i=0; i < 5; i++){
+	for(int i=0; i < size_of_word; i++){
 		char guess[100];
 		printf("Enter your guess : ");
 		scanf("%s", guess);
@@ -34,7 +37,7 @@ int play_wordle(char target[])
 			continue;
 		}
 
-		for(int j=0; j < 5; j++){
+		for(int j=0; j < size_of_word; j++){
 			if( target[j]==guess[j] )
 			{
 				printf("O");
@@ -54,7 +57,7 @@ int play_wordle(char target[])
 			return 0;
 		}		
 
-		printf("\nYou have used %d times! %d chances left \n", i+1, 5-(i+1));
+		printf("\nYou have used %d times! %d chances left \n", i+1, size_of_word-(i+1));
 	}
 	return 0;
 }
@@ -69,10 +72,35 @@ int main(int argc, char *argv[])
 		perror("fopen for choosing wordle words");
 	}
 
-	int  cnt 	   = 0  ; // total count of 5 letters words
+	//get opt of word size
+	int size_of_word = 5;//default size
+	
+	int c;
+    opterr = 0;
+
+    while ((c = getopt(argc, argv, "l:")) != -1) {
+		 switch (c) {
+            case 'l':{
+                //convert num_string to an actual integer
+                char *end;
+                size_of_word = (int) strtol(optarg, &end, 10);
+                if (end == optarg) {
+                    puts("HERE______0_______");
+                    fprintf(stderr, "argument is not a number\n");
+                    return 1;
+                }
+            }
+                break;
+			default:
+                abort();
+		 }
+	}
+		
+
+	int  cnt 	   = 0  ; // total count of size_of_word letters words
 	char target[6] = "" ; // Wordle Keyword
 
-	// 2. Write 'temp' file to keep 5 letters words only
+	// 2. Write 'temp' file to keep size_of_word letters words only
 	char line[500];
 	FILE *file_temp = fopen("temp", "w+");
 	if ( file_temp == NULL ){
@@ -80,7 +108,7 @@ int main(int argc, char *argv[])
 	}
 
 	while( fgets(line, 500, file) != NULL ){
-		if( strlen(line) == 6 ){
+		if( strlen(line) == size_of_word + 1 ){
 			bool flag = 0;
 
 			for (int i =0 ; i < strlen(line)-1; i++) {
@@ -120,7 +148,7 @@ int main(int argc, char *argv[])
 
 		// If selected random number matches current idx, we set that word as target
 		if( idx == random ){
-			strncpy( target, line, 5);
+			strncpy( target, line, size_of_word);
 			break;
 		}
 		idx++;
@@ -134,7 +162,7 @@ int main(int argc, char *argv[])
 	strcpy(answer, "yes");
 	while ( strcmp( answer, "yes") == 0 ) {
 		
-		play_wordle(target);
+		play_wordle(target, size_of_word);
 		printf("Do you want to play again? :::: ");
 		while ( fgets(answer, 50, stdin) != NULL ) {
 			continue;
