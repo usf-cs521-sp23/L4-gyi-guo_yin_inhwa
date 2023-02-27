@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <ctype.h>
 
+#define MAX_WORD_SIZE 10
+
 int check_lowercase(int c, int start, int end){
     // check if start-end is correct range
     if ( start > end  || start == end ){
@@ -64,12 +66,15 @@ int play_wordle(char target[], int size_of_word)
 
 		printf("\nYou have used %d times! %d chances left \n", i+1, size_of_word-(i+1));
 	}
+
+	printf("The correct answer is [%s] \n", target);
 	return 0;
 }
 
 
 int main(int argc, char *argv[])
 {
+
 	/* =================================== GAME SETTING =================================== */
 	// 1. Open the file with argument that contains a lot of English words
 	FILE *file = fopen(argv[1], "r");
@@ -87,23 +92,32 @@ int main(int argc, char *argv[])
 		 switch (c) {
             case 'l':{
                 //convert num_string to an actual integer
+			
                 char *end;
                 size_of_word = (int) strtol(optarg, &end, 10);
+				if ( size_of_word > MAX_WORD_SIZE ){
+					fprintf(stderr, "argument is too big. It is allowed from 2 to %d letters of word. \n", MAX_WORD_SIZE);
+                    return 1;
+				}
+
                 if (end == optarg) {
-                    puts("HERE______0_______");
                     fprintf(stderr, "argument is not a number\n");
                     return 1;
                 }
             }
                 break;
 			default:
-                abort();
+				if (optarg == NULL) {
+					printf("please add am argument after -l flag \n");
+					return 1;	
+				}
+				break;
 		 }
 	}
 		
 
 	int  cnt 	   = 0  ; // total count of size_of_word letters words
-	char target[6] = "" ; // Wordle Keyword
+	char target[ MAX_WORD_SIZE +1] = "" ; // Wordle Keyword
 
 	// 2. Write 'temp' file to keep size_of_word letters words only
 	char line[500];
@@ -163,15 +177,18 @@ int main(int argc, char *argv[])
 	fclose(file_select);
 	
 	/* =================================== GAME START =================================== */
+
+	char username[50];
+	printf("Please enter your name: ");
+	fgets(username, 50, stdin);
+	printf("Welcome ! %s", username);
+
 	char answer[50];
-	strcpy(answer, "yes");
-	while ( strcmp( answer, "yes") == 0 ) {
-		
+	strcpy(answer, "Y");
+	while ( strcmp( answer, "N") != 0 ) {
 		play_wordle(target, size_of_word);
-		printf("Do you want to play again? :::: ");
-		while ( fgets(answer, 50, stdin) != NULL ) {
-			continue;
-		}
+		printf("Do you want to play again? [Y/N] :::: ");
+		fgets(answer, 50, stdin);
 	}
 	
 }
