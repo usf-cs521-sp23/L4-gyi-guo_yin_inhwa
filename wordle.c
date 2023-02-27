@@ -67,7 +67,7 @@ int play_wordle(char target[], int size_of_word)
 		printf("\nYou have used %d times! %d chances left \n", i+1, size_of_word-(i+1));
 	}
 
-	printf("The correct answer is [%s] \n", target);
+	printf("Unfortunately, the correct answer is [%s] \n", target);
 	return 0;
 }
 
