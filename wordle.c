@@ -32,8 +32,8 @@ int play_wordle(char target[], int size_of_word)
 		printf("Enter your guess : ");
 		scanf("%s", guess);
 
-		if( strlen(guess)!= 5){
-			printf("This is not 5 characters. Please learn to play the game correctly.\n");
+		if( strlen(guess)!= size_of_word){
+			printf("This is not %d characters. Please learn to play the game correctly.\n",size_of_word);
 			continue;
 		}
 
