@@ -37,18 +37,23 @@ int play_wordle(char target[], int size_of_word)
 			continue;
 		}
 
+		int green_count = 0;
+        int yellow_count = 0;
+
 		for(int j=0; j < size_of_word; j++){
 			if( target[j]==guess[j] )
 			{
-				printf("O");
+				printf("\x1b[32mO\x1b[0m"); // green
+                green_count++;
 			}
 			else if( strchr(target, guess[j]) != NULL )
 			{
-				printf("A");
+				printf("\x1b[33mA\x1b[0m"); // yellow
+                yellow_count++;
 			}
 			else //means not found
 			{
-				printf("X");
+				printf("\x1b[30mX\x1b[0m"); // gray
 			}
 		}
 
