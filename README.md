@@ -1,43 +1,66 @@
 <h1 id="wordle">Wordle</h1>
-<p><em>Create your GitHub repo for this lab here:</em> <a href="https://classroom.github.com/a/NPWEj2Uw">https://classroom.github.com/a/NPWEj2Uw</a></p>
-<p>We&rsquo;ve been building our own Wordle game in class. Here&rsquo;s what we agreed on for the base requirements:</p>
-<ol>
-<li>Find out who is playing the game</li>
-<li>Open a text file with words to use (maybe in /usr/share/dict ?)
-<ul>
-<li>Make a word list from those words (only 5 letters, no special chars)</li>
-</ul>
-</li>
-<li>Pick one word randomly</li>
-<li>Read guesses on standard input (stdin) &ndash; but only give them 6 chances
-<ul>
-<li>Check if it&rsquo;s actually a valid word, no uppercase, punctuation</li>
-<li>Check if the letter is in the right spot, or at least in the word</li>
-</ul>
-</li>
-<li>Let user know which letters have already been used
-<ul>
-<li>Track which letters were wrong</li>
-</ul>
-</li>
-<li>Have some way of showing what was right/wrong, how many times guessed, how many left</li>
-<li>Either print that they win or lose (with personalization, e.g., &ldquo;You are terrible Matthew&rdquo;)</li>
-<li>Ask them if they want to play again</li>
-</ol>
-<h2 id="special-features">Special Features</h2>
-<p>Your implementation of Wordle should have a unique special feature. Here are some of the ideas we came up with in class:</p>
-<ol>
-<li>Stats (wins, losses, how many guesses, streaks) / previous results
-<ul>
-<li>Print to text file for bragging rights</li>
-</ul>
-</li>
-<li>Let user choose the size of the word</li>
-<li>Use colors to indicate right, wrong, and &ldquo;out of place&rdquo;</li>
-<li>Cowsay integration</li>
-<li>Time limit</li>
-<li>Do everything in C (no pre-generated word list)</li>
-</ol>
-<h2 id="documentation">Documentation</h2>
-<p>You <strong>must</strong> explain how to build and run your program in your README.md file so that the course staff can play your Wordle and grade it.</p>
+
+<h4>Download Dictionary and cowsay using the following command</h4>
+
+``` sudo pacman -Sy words ```
+``` sudo pacman -Sy cowsay ```
+
+<h4>Usage:</h4>
+
+``` ./a.out /usr/share/dict/american-english [-l length_of_words] ```
+
+<h5>Options:</h5>
+
+* -l &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_of_words &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User can deefine the length of word from 2 to 10 letters of word. Default length of word is 5.
+
+\* Basically, the user is initially allowed five guesses, which corresponds to the default word length of five characters. If the user chooses to change the word length, the total number of guesses will be adjusted accordingly to match the new word length.
+
+<h5>Example:</h5>
+
+``` ./a.out /usr/share/dict/american-english -l 7 ```
+
+<h4>Enter the user name </h4>
+
+```bash
+Please enter your name: #Please enter your name here
+```
+
+<h4>Start the game !</h4>
+
+```bash 
+Enter your guess :  #Please enter guess of word 
+```
+
+There are three different result for user's guess
+1) Green Letter(O) : correct letter at the correct position
+2) Yellow Letter(A) : correct letter but at incorrect position
+3) Gray Letter(X) : wrong letter
+
+// TODO :::: BUGS TO FIX
+
+<h4>End of the game</h4>
+If the user guesses correctly in given chances, the cow says "YOU WIN!"
+
+``` _________ 
+< YOU WIN >
+ --------- 
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+If the user loses, the correct answer will be shown.
+```
+// TODO :::: BUGS TO FIX
+
+Unfortunately, the correct answer is [#answer], #username 
+```
+
+<h4>Play again</h4>
+After the game, user can choose to continue to play or not.
+
+```bash
+Do you want to play again? [Y/N] :::: #user can enter Y or N
+```
 
