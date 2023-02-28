@@ -10,6 +10,10 @@
 
 #define MAX_WORD_SIZE 10
 
+int check_lowercase(int c, int start, int end);
+int play_wordle(char target[], int size_of_word, char *username);
+int get_target(int cnt, char *target, int size_of_word);
+
 int check_lowercase(int c, int start, int end){
     // check if start-end is correct range
     if ( start > end  || start == end ){
@@ -27,8 +31,11 @@ int check_lowercase(int c, int start, int end){
 
 }
 
-int play_wordle(char target[], int size_of_word)
+int play_wordle(char target[], int size_of_word, char *username)
 {
+	printf("target >>> %s\n", target);
+	char user_input[26] = {0};
+
 	for(int i=0; i < size_of_word; i++){
 		char guess[100];
 		printf("Enter your guess : ");
@@ -42,7 +49,18 @@ int play_wordle(char target[], int size_of_word)
 		int green_count = 0;
         int yellow_count = 0;
 
+		// When the user guessed correctly
+		if ( strcmp(target, guess) == 0 ){
+			char cowwsay[200] ;
+			strcpy(cowwsay, "cowsay \"YOU WIN\" !! Congratulations, ") ;
+			strcat(cowwsay, username);
+			system(cowwsay);
+			return 0;
+		}	
+
 		for(int j=0; j < size_of_word; j++){
+			user_input[guess[j]-97]++;
+
 			if( target[j]==guess[j] )
 			{
 				printf("\x1b[32mO\x1b[0m"); // green
@@ -59,18 +77,50 @@ int play_wordle(char target[], int size_of_word)
 			}
 		}
 
-		if ( strcmp(target, guess) == 0 ){
-			system("cowsay \"YOU WIN\"");
-			return 0;
-		}		
+		printf("\nLetters you have used ::: ");
+		// print out guessed letter 
+		for ( int i = 0 ; i < 26; i++){
+			if( user_input[i] > 0 ){
+				printf("%c", i+97);
+			}
+		}
+		
 
 		printf("\nYou have used %d times! %d chances left \n", i+1, size_of_word-(i+1));
 	}
 
-	printf("Unfortunately, the correct answer is [%s] \n", target);
+	printf("Unfortunately, the correct answer is [%s], %s", target, username);
 	return 0;
 }
 
+
+int get_target(int cnt, char *target, int size_of_word){
+
+	FILE *file_select = fopen("temp", "r");
+	if ( file_select == NULL ){
+		perror("fopen for selecting words");
+	}
+	// 4. Get Random number from 'temp' file
+	srand(time(NULL));		   // always should add if we want to get random num,b
+	int random = rand() % cnt; // default
+	int idx    = 1 ; // index to get keyword from 'temp'
+	// printf("count  number is %d \n", cnt);
+
+	char line[1024];
+	while( fgets(line, 500, file_select) != NULL ){
+		int len = strlen(line);
+
+		// If selected random number matches current idx, we set that word as target
+		if( idx == random ){
+			strncpy( target, line, size_of_word);
+			break;
+		}
+		idx++;
+	}
+	
+	fclose(file_select);
+	return 0;
+}
 
 int main(int argc, char *argv[])
 {
@@ -148,33 +198,9 @@ int main(int argc, char *argv[])
 	fclose(file);
 	fclose(file_temp);
 
-	// 3. Read 'temp' to randomly select the target word
-	FILE *file_select = fopen("temp", "r");
-	if ( file == NULL ){
-		perror("fopen for selecting words");
-	}
+	// 3. Get Random number from 'temp' file
+	get_target(cnt, target, size_of_word);
 
-	// 4. Get Random number from 'temp' file
-	srand(time(NULL));		   // always should add if we want to get random num,b
-	int random = rand() % cnt; // default
-	int idx    = 1 ; // index to get keyword from 'temp'
-	// printf("count  number is %d \n", cnt);
-	// printf("random number is %d \n", random);
-
-
-	while( fgets(line, 500, file_select) != NULL ){
-		int len = strlen(line);
-
-		// If selected random number matches current idx, we set that word as target
-		if( idx == random ){
-			strncpy( target, line, size_of_word);
-			break;
-		}
-		idx++;
-	}
-
-	// printf("TARGET WORD ::: [%s] \n", target);
-	fclose(file_select);
 	
 	/* =================================== GAME START =================================== */
 
@@ -183,12 +209,13 @@ int main(int argc, char *argv[])
 	fgets(username, 50, stdin);
 	printf("Welcome ! %s", username);
 
-	char answer[50];
+	char answer[50] = {0};
 	strcpy(answer, "Y");
 	while ( strcmp( answer, "N") != 0 ) {
-		play_wordle(target, size_of_word);
-		printf("Do you want to play again? [Y/N] :::: ");
-		fgets(answer, 50, stdin);
+		get_target(cnt, target, size_of_word);
+		play_wordle(target, size_of_word, username);
+		printf("\nDo you want to play again? [Y/N] :::: ");
+		scanf("%s" , answer);
 	}
 	
 }
