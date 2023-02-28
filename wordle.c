@@ -33,7 +33,6 @@ int check_lowercase(int c, int start, int end){
 
 int play_wordle(char target[], int size_of_word, char *username)
 {
-	printf("target >>> %s\n", target);
 	char user_input[26] = {0};
 
 	for(int i=0; i < size_of_word; i++){
