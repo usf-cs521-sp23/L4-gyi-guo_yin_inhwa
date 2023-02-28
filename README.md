@@ -3,6 +3,7 @@
 ### Download Dictionary and cowsay using the following command
 
 ``` sudo pacman -Sy words ```
+
 ``` sudo pacman -Sy cowsay ```
 
 ### Usage:
