@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 
 	char answer[50] = {0};
 	strcpy(answer, "Y");
-	while ( strcmp( answer, "N") != 0 ) {
+	while ( strcmp( answer, "Y") == 0 ) {
 		get_target(cnt, target, size_of_word);
 		play_wordle(target, size_of_word, username);
 		printf("\nDo you want to play again? [Y/N] :::: ");
