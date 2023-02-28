@@ -37,13 +37,11 @@ There are three different result for user's guess
 2) Yellow Letter(A) : correct letter but at incorrect position
 3) Gray Letter(X) : wrong letter
 
-// TODO :::: BUGS TO FIX
-
 ### End of the game
 If the user guesses correctly in given chances, the cow says "YOU WIN!"
 
 ``` _________ 
-< YOU WIN >
+< YOU WIN !! Congratulations, #username >
  --------- 
         \   ^__^
          \  (oo)\_______
@@ -52,9 +50,8 @@ If the user guesses correctly in given chances, the cow says "YOU WIN!"
                 ||     ||
 ```
 If the user loses, the correct answer will be shown.
-```
-// TODO :::: BUGS TO FIX
 
+```
 Unfortunately, the correct answer is [#answer], #username 
 ```
 
@@ -65,3 +62,5 @@ After the game, user can choose to continue to play or not.
 Do you want to play again? [Y/N] :::: #user can enter Y or N
 ```
 
+If the user enters Y then they can play again with new word.
+If the user enters anything besides Y, then the game is finished.
