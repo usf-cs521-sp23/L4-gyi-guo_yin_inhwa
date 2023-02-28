@@ -1,31 +1,31 @@
 <h1 id="wordle">Wordle</h1>
 
-<h4>Download Dictionary and cowsay using the following command</h4>
+### Download Dictionary and cowsay using the following command
 
 ``` sudo pacman -Sy words ```
 ``` sudo pacman -Sy cowsay ```
 
-<h4>Usage:</h4>
+### Usage:
 
 ``` ./a.out /usr/share/dict/american-english [-l length_of_words] ```
 
-<h5>Options:</h5>
+#### Options:
 
 * -l &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;length_of_words &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User can deefine the length of word from 2 to 10 letters of word. Default length of word is 5.
 
 \* Basically, the user is initially allowed five guesses, which corresponds to the default word length of five characters. If the user chooses to change the word length, the total number of guesses will be adjusted accordingly to match the new word length.
 
-<h5>Example:</h5>
+#### Example:
 
 ``` ./a.out /usr/share/dict/american-english -l 7 ```
 
-<h4>Enter the user name </h4>
+### Enter the user name
 
 ```bash
 Please enter your name: #Please enter your name here
 ```
 
-<h4>Start the game !</h4>
+### Start the game !
 
 ```bash 
 Enter your guess :  #Please enter guess of word 
@@ -38,7 +38,7 @@ There are three different result for user's guess
 
 // TODO :::: BUGS TO FIX
 
-<h4>End of the game</h4>
+### End of the game
 If the user guesses correctly in given chances, the cow says "YOU WIN!"
 
 ``` _________ 
@@ -57,7 +57,7 @@ If the user loses, the correct answer will be shown.
 Unfortunately, the correct answer is [#answer], #username 
 ```
 
-<h4>Play again</h4>
+### Play again
 After the game, user can choose to continue to play or not.
 
 ```bash
